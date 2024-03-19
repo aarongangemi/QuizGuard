@@ -1,5 +1,3 @@
-"use client";
-
 import React, { FC, useState } from "react";
 import { Box, Button, Stack, TextField } from "@mui/material";
 import Image from "next/image";
