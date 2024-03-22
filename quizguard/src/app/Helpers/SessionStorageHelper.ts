@@ -5,7 +5,7 @@ export class SessionStorageHelper {
       sessionStorage.setItem(usernameKey, value);
     }
   
-    static getUsername(key: string): string | null {
+    static getUsername(): string | null {
       return sessionStorage.getItem(usernameKey);
     }
 }

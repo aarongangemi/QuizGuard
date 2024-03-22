@@ -19,11 +19,12 @@ import NameLogo from '../../../public/NameLogo.png';
 import Image from "next/image";
 import QuizIcon from '@mui/icons-material/Quiz';
 import LogoSymbol from '../../../public/LogoSymbol.png';
-import { Stack} from '@mui/material';
+import { Box, Stack} from '@mui/material';
 import { FC } from 'react';
 import useSidebar from '../hooks/useSidebar';
 import { useRouter } from 'next/navigation';
 import { Tabs } from './Tabs';
+import { SessionStorageHelper } from '../helpers/SessionStorageHelper';
 
 const drawerWidth = 240;
 
@@ -57,14 +58,14 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-end',
 }));
 
-export const Sidebar: FC = () => {
+export const SidebarAndHeaderBar: FC = () => {
     const theme = useTheme();
     const { open, handleDrawerOpen, handleDrawerClose } = useSidebar();
     const router = useRouter();
     return (
     <>
     <CssBaseline />
-      <AppBar position="fixed" open={open} color='transparent'>
+      <AppBar position="fixed" open={open} color='transparent' style={{backgroundColor: 'white'}}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -76,20 +77,20 @@ export const Sidebar: FC = () => {
             <MenuIcon />
           </IconButton>
           <FlexCenter>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-          >
-            <Image src={NameLogo} alt="login" width={200} height={40}/>
-          </IconButton>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+            >
+              <Image src={NameLogo} alt="login" width={200} height={40}/>
+            </IconButton>
           </FlexCenter>
         </Toolbar>
       </AppBar>
       <Drawer
         sx={{
-          width: drawerWidth,
+          width: open ? drawerWidth : 0,
           flexShrink: 0,
           '& .MuiDrawer-paper': {
             width: drawerWidth,
@@ -101,12 +102,14 @@ export const Sidebar: FC = () => {
         open={open}
       >
         <DrawerHeader>
-            <Stack direction={'row'} width={'100%'} justifyContent={'space-between'}>
-            <Image src={LogoSymbol} alt="login" width={40} height={40}/>
+          <Stack direction={'row'} width={'100%'} justifyContent={'space-between'}>
+            <Box ml={1}>
+              <h4>Hello, {SessionStorageHelper.getUsername()}</h4>
+            </Box>
             <IconButton onClick={handleDrawerClose}>
-                {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+              {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
             </IconButton>
-            </Stack>
+          </Stack>
         </DrawerHeader>
         <Divider />
         <List>
