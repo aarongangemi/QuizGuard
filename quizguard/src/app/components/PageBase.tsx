@@ -16,18 +16,18 @@ interface FooterNavigationProps {
 interface Props {
     children: ReactNode;
     footerNavigation: FooterNavigationProps;
+    moduleCompletionKey: string;
 }
 
-export const PageBase: FC<Props> = ({ children, footerNavigation }) => {
+export const PageBase: FC<Props> = ({ children, footerNavigation, moduleCompletionKey }) => {
     const { open } = useSidebar();
-
     return (
         <Box sx={{ display: 'flex' }} >
             <SidebarAndHeaderBar />
             <Main open={open}>
-            <DrawerHeader />
-            {children}
-            <ModuleButtonsFooter {...footerNavigation}/>
+                <DrawerHeader />
+                {children}
+                <ModuleButtonsFooter {...footerNavigation} moduleCompletionKey={moduleCompletionKey}/>
             </Main>
         </Box>
     )

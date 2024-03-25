@@ -18,13 +18,12 @@ import SchoolIcon from '@mui/icons-material/School';import { FlexCenter } from '
 import NameLogo from '../../../public/NameLogo.png';
 import Image from "next/image";
 import QuizIcon from '@mui/icons-material/Quiz';
-import LogoSymbol from '../../../public/LogoSymbol.png';
-import { Box, Stack} from '@mui/material';
 import { FC } from 'react';
 import useSidebar from '../hooks/useSidebar';
 import { useRouter } from 'next/navigation';
 import { Tabs } from './Tabs';
-import { SessionStorageHelper } from '../helpers/SessionStorageHelper';
+import { ModuleKeys } from './ModuleData';
+import LockIcon from '@mui/icons-material/Lock';
 
 const drawerWidth = 240;
 
@@ -62,6 +61,13 @@ export const SidebarAndHeaderBar: FC = () => {
     const theme = useTheme();
     const { open, handleDrawerOpen, handleDrawerClose } = useSidebar();
     const router = useRouter();
+
+    const isQuizUnlocked = () => {
+      return Object.values(ModuleKeys).every((key) => sessionStorage.getItem(key) !== null);
+    }
+
+    console.log(isQuizUnlocked())
+
     return (
     <>
     <CssBaseline />
@@ -102,22 +108,36 @@ export const SidebarAndHeaderBar: FC = () => {
         open={open}
       >
         <DrawerHeader>
-          <Stack direction={'row'} width={'100%'} justifyContent={'space-between'}>
-            <Box ml={1}>
-              <h4>Hello, {SessionStorageHelper.getUsername()}</h4>
-            </Box>
             <IconButton onClick={handleDrawerClose}>
               {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
             </IconButton>
-          </Stack>
         </DrawerHeader>
         <Divider />
         <List>
           {Object.values(Tabs).map((text, index) => (
-            <ListItem key={text} disablePadding onClick={() => router.push(Tabs.Modules === text ? '/modules' : '/take-quiz')}>
-              <ListItemButton style={{color: window.location.pathname === text ? '#0080ffd8' : 'gray', fontWeight: 'bold'}}>
+            <ListItem 
+              key={text} 
+              disablePadding 
+              style={{opacity: !isQuizUnlocked() && text === Tabs.TakeQuiz ? 0.5 : 1}}
+              onClick={() => {
+                if(isQuizUnlocked() && text === Tabs.TakeQuiz)
+                {
+                  router.push('/take-quiz');
+                  return;
+                }
+                if(!isQuizUnlocked() && text === Tabs.TakeQuiz)
+                {
+                  return;
+                }
+                router.push('/');
+              }}
+            >
+              <ListItemButton style={{
+                color: window.location.pathname === text ? '#0080ffd8' : 'gray', 
+                fontWeight: 'bold',
+                cursor: !isQuizUnlocked() && text === Tabs.TakeQuiz ? 'not-allowed' : 'pointer'}}>
                 <ListItemIcon>
-                  {index % 2 === 0 ? <SchoolIcon /> : <QuizIcon />}
+                  {index % 2 === 0 ? <SchoolIcon /> : isQuizUnlocked() ? <QuizIcon /> : <LockIcon />}
                 </ListItemIcon>
                 <ListItemText primary={text} />
               </ListItemButton>
