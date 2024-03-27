@@ -2,15 +2,11 @@
 import { FC } from "react"
 import { PageBase } from "../components/PageBase";
 import { ModuleKeys } from "../components/ModuleData";
+import { ModuleButtonsFooter } from "../components/ModuleButtonsFooter";
 
 const PhishingPage: FC = () => {
     return (
-        <PageBase
-        footerNavigation={{
-            nextLink: '/mitm',
-            previousLink: '/malware',
-        }}
-        moduleCompletionKey={ModuleKeys.PHISHING}>
+        <PageBase>
             <h1 style={{marginTop: 0}}>Understanding Phishing Scams and Prevention</h1>
             <h2>Definition of Phishing:</h2>
             <p>Phishing is a cybercrime tactic where fraudulent emails, messages, or websites are used to deceive individuals into disclosing sensitive information, such as passwords, credit card numbers, or personal data. These deceptive communications often impersonate trusted entities, such as banks, government agencies, or reputable companies, and typically employ social engineering techniques to manipulate victims into taking action.</p>
@@ -55,6 +51,11 @@ const PhishingPage: FC = () => {
                 <li><strong>Stay Informed:</strong> Stay informed about the latest phishing trends and techniques to better protect yourself and your organization from emerging threats.</li>
                 <li><strong>Use Website Verification Tools:</strong> Utilize website verification tools or browser extensions to check the legitimacy of websites before entering sensitive information.</li>
             </ol>
+            <ModuleButtonsFooter 
+                nextLink='/mitm'
+                previousLink='/malware'
+                moduleCompletionKey={ModuleKeys.PHISHING}
+            />
         </PageBase>
     )
 }

@@ -6,20 +6,11 @@ import { SidebarAndHeaderBar } from "./SidebarAndHeaderBar";
 import { Main } from "./Main";
 import { ModuleButtonsFooter } from "./ModuleButtonsFooter";
 
-interface FooterNavigationProps {
-    previousLink: string;
-    nextLink: string;
-    previousText?: string;
-    nextText?: string;
-}
-
 interface Props {
     children: ReactNode;
-    footerNavigation: FooterNavigationProps;
-    moduleCompletionKey: string;
 }
 
-export const PageBase: FC<Props> = ({ children, footerNavigation, moduleCompletionKey }) => {
+export const PageBase: FC<Props> = ({ children}) => {
     const { open } = useSidebar();
     return (
         <Box sx={{ display: 'flex' }} >
@@ -27,7 +18,6 @@ export const PageBase: FC<Props> = ({ children, footerNavigation, moduleCompleti
             <Main open={open}>
                 <DrawerHeader />
                 {children}
-                <ModuleButtonsFooter {...footerNavigation} moduleCompletionKey={moduleCompletionKey}/>
             </Main>
         </Box>
     )

@@ -2,15 +2,11 @@
 import { FC } from "react"
 import { PageBase } from "../components/PageBase";
 import { ModuleKeys } from "../components/ModuleData";
+import { ModuleButtonsFooter } from "../components/ModuleButtonsFooter";
 
 const DdosPage: FC = () => {
     return (
-        <PageBase footerNavigation={{
-            nextLink: '/malware',
-            nextText: "Take the quiz",
-            previousLink: '/mitm',
-        }} 
-        moduleCompletionKey={ModuleKeys.DDOS}>
+        <PageBase>
             <h1>Understanding Distributed Denial of Service (DDoS) Attacks</h1>
             <p>A Distributed Denial of Service (DDoS) attack is a malicious attempt to disrupt the normal traffic of a targeted server, service, or network by overwhelming it with a flood of internet traffic. Perpetrated by networks of compromised devices, known as botnets, DDoS attacks aim to exhaust resources, rendering the target inaccessible to legitimate users.</p>
             
@@ -41,6 +37,13 @@ const DdosPage: FC = () => {
                 <li>Implement Rate Limiting: Set limits on the number of requests or connections allowed from individual IP addresses or user sessions to prevent resource exhaustion.</li>
                 <li>Deploy DDoS Protection Services: Utilize specialized DDoS protection services from internet service providers (ISPs) or cloud security providers to mitigate attack traffic before it reaches the target.</li>
             </ul>
+            <ModuleButtonsFooter
+                nextLink='/quiz-cover'
+                nextText="Take the quiz"
+                previousLink='/mitm'
+                moduleCompletionKey={ModuleKeys.DDOS}
+            />
+
         </PageBase>
     )
 }

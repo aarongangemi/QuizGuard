@@ -2,10 +2,11 @@
 import { FC } from "react"
 import { PageBase } from "../components/PageBase";
 import { ModuleKeys } from "../components/ModuleData";
+import { ModuleButtonsFooter } from "../components/ModuleButtonsFooter";
 
 const MitmPage: FC = () => {
     return (
-    <PageBase footerNavigation={{nextLink: '/ddos', previousLink: '/phishing'}} moduleCompletionKey={ModuleKeys.MITM}>
+    <PageBase>
         <h1 style={{marginTop: 0}}>Understanding Man-in-the-Middle (MitM) Attacks</h1>
         <p>A Man-in-the-Middle (MitM) attack is a form of cyber attack where an unauthorized third party intercepts and possibly alters communication between two parties without their knowledge. By positioning themselves between the victim and intended recipient, attackers can eavesdrop on or manipulate data exchanged, potentially compromising sensitive information or injecting malicious content into the communication flow.</p>
         
@@ -41,6 +42,7 @@ const MitmPage: FC = () => {
             <li><strong>Use Strong Authentication:</strong> Implement strong authentication mechanisms, such as multi-factor authentication (MFA), to verify the identity of users and prevent unauthorized access to accounts or systems.</li>
             <li><strong>Train Users:</strong> Educate users about the risks of MitM attacks and teach them to recognize warning signs, such as SSL warnings or unexpected certificate errors, when accessing online services.</li>
         </ul>
+        <ModuleButtonsFooter nextLink='/ddos' previousLink='/phishing' moduleCompletionKey={ModuleKeys.MITM}/>
     </PageBase>
     )
 }

@@ -66,8 +66,6 @@ export const SidebarAndHeaderBar: FC = () => {
       return Object.values(ModuleKeys).every((key) => sessionStorage.getItem(key) !== null);
     }
 
-    console.log(isQuizUnlocked())
-
     return (
     <>
     <CssBaseline />
@@ -122,7 +120,7 @@ export const SidebarAndHeaderBar: FC = () => {
               onClick={() => {
                 if(isQuizUnlocked() && text === Tabs.TakeQuiz)
                 {
-                  router.push('/take-quiz');
+                  router.push('/quiz-cover');
                   return;
                 }
                 if(!isQuizUnlocked() && text === Tabs.TakeQuiz)
