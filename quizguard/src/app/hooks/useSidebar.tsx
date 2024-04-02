@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 
 function useSidebar() {
   const [open, setOpen] = useState(true);
@@ -16,7 +16,7 @@ function useSidebar() {
   return {
     open,
     handleDrawerOpen,
-    handleDrawerClose
+    handleDrawerClose,
   };
 }
 

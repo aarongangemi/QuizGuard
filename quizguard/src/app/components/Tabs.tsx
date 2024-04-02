@@ -1,4 +1,4 @@
 export enum Tabs {
-    Modules = 'Modules',
-    TakeQuiz = 'Take the Quiz'
+  Modules = "Modules",
+  TakeQuiz = "Take the Quiz",
 }

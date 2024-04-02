@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("QuizGuardApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2311b4f4bda98d988bba44599fb53b3c04a1c973")]
 [assembly: System.Reflection.AssemblyProductAttribute("QuizGuardApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("QuizGuardApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
