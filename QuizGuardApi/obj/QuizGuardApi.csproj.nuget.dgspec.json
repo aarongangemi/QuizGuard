@@ -1,27 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\dev\\QuizGuard\\QuizGuardApi\\QuizGuardApi.csproj": {}
+    "/Users/aarongangemi/Desktop/dev/QuizGuard/QuizGuardApi/QuizGuardApi.csproj": {}
   },
   "projects": {
-    "C:\\dev\\QuizGuard\\QuizGuardApi\\QuizGuardApi.csproj": {
+    "/Users/aarongangemi/Desktop/dev/QuizGuard/QuizGuardApi/QuizGuardApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\dev\\QuizGuard\\QuizGuardApi\\QuizGuardApi.csproj",
+        "projectUniqueName": "/Users/aarongangemi/Desktop/dev/QuizGuard/QuizGuardApi/QuizGuardApi.csproj",
         "projectName": "QuizGuardApi",
-        "projectPath": "C:\\dev\\QuizGuard\\QuizGuardApi\\QuizGuardApi.csproj",
-        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\dev\\QuizGuard\\QuizGuardApi\\obj\\",
+        "projectPath": "/Users/aarongangemi/Desktop/dev/QuizGuard/QuizGuardApi/QuizGuardApi.csproj",
+        "packagesPath": "/Users/aarongangemi/.nuget/packages/",
+        "outputPath": "/Users/aarongangemi/Desktop/dev/QuizGuard/QuizGuardApi/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/aarongangemi/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -34,11 +32,6 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -58,6 +51,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[8.0.3, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
@@ -83,7 +80,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.203/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

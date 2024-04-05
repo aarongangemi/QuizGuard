@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualBasic.FileIO;
+using Newtonsoft.Json;
 using QuizGuardApi.Model;
 using System.Text.Json;
 
@@ -21,8 +22,9 @@ namespace QuizGuardApi.Controllers
             allQuestions.AddRange(QuestionData.MitmQuestions);
             allQuestions.AddRange(QuestionData.DdosQuestions);
 
-            var json = JsonSerializer.Serialize(allQuestions);
+            var json = JsonConvert.SerializeObject(allQuestions);
             return Content(json, "application/json");
         }
     }
 }
+

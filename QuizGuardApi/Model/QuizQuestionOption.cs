@@ -1,13 +1,13 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace QuizGuardApi.Model
 {
     public class QuizQuestionOption
     {
-        [JsonPropertyName("text")]
+        [JsonProperty("text")]
         public string Text { get; set; }
 
-        [JsonPropertyName("isCorrect")]
+        [JsonProperty("isCorrect")]
         public bool IsCorrect { get; set; }
     }
 }

@@ -1,19 +1,22 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace QuizGuardApi.Model
 {
     public class QuizQuestion
     {
-        [JsonPropertyName("text")]
+        [JsonProperty("text")]
 
         public string Text { get; set; }
 
-        [JsonPropertyName("order")]
+        [JsonProperty("order")]
 
         public int Order { get; set; }
 
-        [JsonPropertyName("options")]
+        [JsonProperty("options")]
 
         public List<QuizQuestionOption> Options = new();
+
+        [JsonProperty("explainer")]
+        public string Explainer { get; set; }
     }
 }
