@@ -1,4 +1,4 @@
-class QuizOption {
+export class QuizOption {
   text: string;
   isCorrect?: boolean;
 

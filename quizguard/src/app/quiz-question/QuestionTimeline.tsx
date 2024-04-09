@@ -18,9 +18,13 @@ export const QuestionTimeline: FC<Props> = ({ steps, activeStep }) => {
           indicator={
             <StepIndicator
               variant={activeStep <= index ? "soft" : "solid"}
-              color={activeStep < index ? "neutral" : "primary"}
+              color={activeStep <= index ? "neutral" : "primary"}
+              sx={{
+                opacity: step >= activeStep ? 0.5 : 1,
+                cursor: step >= activeStep ? "not-allowed" : undefined,
+              }}
             >
-              {activeStep <= index ? index + 1 : <Check />}
+              {activeStep <= index + 1 ? index + 1 : <Check />}
             </StepIndicator>
           }
           sx={{

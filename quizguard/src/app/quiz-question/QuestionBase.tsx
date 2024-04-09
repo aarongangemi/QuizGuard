@@ -1,23 +1,28 @@
 import { Button, Paper, Stack, Typography } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
-import { FC, useEffect, useState } from "react";
-import { useQuery } from "react-query";
-import { QuizQuestion } from "../components/QuizQuestion";
+import { FC, useEffect, useRef, useState } from "react";
+import { useMutation, useQuery } from "react-query";
+import { QuizOption, QuizQuestion } from "../components/QuizQuestion";
 import { QuestionFooter } from "./QuestionFooter";
-import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import { QuestionOption } from "./QuestionOption";
 import { QuestionTimeline } from "./QuestionTimeline";
 import { QuestionExplainer } from "./QuestionExplainer";
+import { CurrentScore } from "./CurrentScore";
+import { useRouter } from "next/navigation";
+import { QuizUserModel } from "../components/QuizUserModel";
+
+const ApiBase = "https://localhost:7237/api";
 
 export const QuestionBase: FC = () => {
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(1);
   const [openExplainer, setOpenExplainer] = useState(false);
+  const currentScore = useRef(0);
+  const router = useRouter();
   const { isLoading, data, refetch, error } = useQuery({
     queryKey: ["questionData"],
-    queryFn: () =>
-      fetch("https://localhost:7237/api/Questions").then((res) => res.json()),
+    queryFn: () => fetch(`${ApiBase}/questions`).then((res) => res.json()),
     onSuccess: (response: QuizQuestion[]) => {
       if (!response?.length) return [];
       return response.map((x) => new QuizQuestion(x));
@@ -26,6 +31,28 @@ export const QuestionBase: FC = () => {
     refetchOnWindowFocus: false,
     refetchOnMount: false,
   });
+
+  const updateFinalScore = async () => {
+    try {
+      const response = await fetch(`${ApiBase}/questions/update-score`, {
+        method: "PUT",
+        body: JSON.stringify({ currentScore: currentScore.current }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update score");
+      }
+      return response.json().then((x) => new QuizUserModel(x));
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const { mutateAsync: updateResultAsync, isLoading: isUpdating } =
+    useMutation(updateFinalScore);
 
   useEffect(() => {
     if (isLoading && !data)
@@ -49,7 +76,38 @@ export const QuestionBase: FC = () => {
     );
   }
 
-  const handleSubmit = () => {
+  if (isUpdating) {
+    return (
+      <Stack
+        width={"100vw"}
+        height={"100vh"}
+        justifyContent={"center"}
+        alignItems={"center"}
+        gap={2}
+      >
+        <CircularProgress color="inherit" />
+        <Typography>Congratulations on finishing the Quiz!</Typography>
+      </Stack>
+    );
+  }
+
+  const questionData = (data || []).find((x) => x.order === currentQuestion);
+
+  const handleSubmit = async (selectionOption: QuizOption) => {
+    if (selectionOption?.isCorrect) {
+      currentScore.current += 100;
+    } else {
+      currentScore.current -= 100;
+    }
+
+    if (questionData?.order === data?.length) {
+      const response = await updateResultAsync();
+      if (!!response && response.userId !== -1) {
+        sessionStorage.setItem("quiz-user-id", response.userId?.toString());
+      }
+      router.push("/quiz-result");
+      return;
+    }
     setIsSubmitting(true);
     setTimeout(() => setOpenExplainer(true), 1500);
   };
@@ -60,8 +118,6 @@ export const QuestionBase: FC = () => {
     setOpenExplainer(false);
     setCurrentQuestion((v) => (v = v + 1));
   };
-
-  const questionData = (data || []).find((x) => x.order === currentQuestion);
 
   if (!questionData || !!error) {
     return (
@@ -101,26 +157,21 @@ export const QuestionBase: FC = () => {
         elevation={6}
       >
         <Stack spacing={2} px={4} mt={3}>
-          <QuestionTimeline
-            steps={data!.map((_, x) => x)}
-            activeStep={currentQuestion}
-          />
+          <Stack flexDirection={"row"} gap={2} justifyContent={"space-between"}>
+            <QuestionTimeline
+              steps={data!.map((_, x) => x)}
+              activeStep={currentQuestion}
+            />
+            <CurrentScore currentScore={currentScore.current} />
+          </Stack>
           <Typography
             fontWeight={"bold"}
             width={"100%"}
             textAlign={"center"}
             color={"black"}
+            pt={2}
           >
-            <Stack
-              spacing={0}
-              flexDirection={"row"}
-              justifyContent={"center"}
-              alignItems={"center"}
-              mt={1}
-            >
-              <HelpOutlineIcon style={{ color: "black", marginRight: 8 }} />
-              {questionData.order}.{questionData.text}
-            </Stack>
+            {questionData.order}.{questionData.text}
           </Typography>
           <Stack spacing={2} pb={4}>
             {questionData.options?.map((x, i) => (
@@ -142,7 +193,9 @@ export const QuestionBase: FC = () => {
           </Stack>
           <QuestionFooter
             nextText="Submit Answer"
-            onNext={handleSubmit}
+            onNext={() =>
+              handleSubmit(questionData.options?.[selectedIndex - 1])
+            }
             disabled={selectedIndex < 1}
           />
           <QuestionExplainer

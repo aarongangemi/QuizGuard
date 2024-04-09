@@ -1,28 +1,46 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualBasic.FileIO;
 using Newtonsoft.Json;
 using QuizGuardApi.Model;
-using System.Text.Json;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace QuizGuardApi.Controllers
 {
-    [Route("api/Questions")]
+    [Route("api/questions")]
     [ApiController]
     public class QuestionController : ControllerBase
     {
+        private readonly LiveContext liveContext;
+
+        public QuestionController(LiveContext _liveContext)
+        {
+            liveContext = _liveContext;
+        }
+
         // GET: api/<QuestionController>
         [HttpGet]
-        public ContentResult Get()
+        public async Task<ContentResult> Get()
         {
             List<QuizQuestion> allQuestions = new List<QuizQuestion>();
             allQuestions.AddRange(QuestionData.MalwareQuestions);
             allQuestions.AddRange(QuestionData.PhishingQuestions);
             allQuestions.AddRange(QuestionData.MitmQuestions);
             allQuestions.AddRange(QuestionData.DdosQuestions);
-
             var json = JsonConvert.SerializeObject(allQuestions);
+            return Content(json, "application/json");
+        }
+
+        [HttpPut]
+        [Route("update-score")]
+        public async Task<IActionResult> UpdateScore([FromBody] ScoreModel model)
+        {
+            await liveContext.QuizResults.AddAsync(new QuizResult
+            {
+                Score = model.CurrentScore
+            });
+            await liveContext.SaveChangesAsync();
+            var userId = liveContext.QuizResults.OrderByDescending(x => x.Id).First().Id;
+            var json = JsonConvert.SerializeObject(new QuizUserData { UserId = userId });
             return Content(json, "application/json");
         }
     }
