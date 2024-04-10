@@ -1,5 +1,4 @@
-import { Button, Paper, Stack, Typography } from "@mui/material";
-import CircularProgress from "@mui/material/CircularProgress";
+import { Paper, Stack, Typography } from "@mui/material";
 import { FC, useEffect, useRef, useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { QuizOption, QuizQuestion } from "../components/QuizQuestion";
@@ -10,19 +9,21 @@ import { QuestionExplainer } from "./QuestionExplainer";
 import { CurrentScore } from "./CurrentScore";
 import { useRouter } from "next/navigation";
 import { QuizUserModel } from "../components/QuizUserModel";
+import { LoadingBase } from "../components/LoadingBase";
+import { ErrorBase } from "../components/ErrorBase";
 
-const ApiBase = "https://localhost:7237/api";
+const ApiBase = "https://localhost:7237/api/questions";
 
 export const QuestionBase: FC = () => {
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [currentQuestion, setCurrentQuestion] = useState(1);
+  const currentQuestionRef = useRef(1);
   const [openExplainer, setOpenExplainer] = useState(false);
   const currentScore = useRef(0);
   const router = useRouter();
-  const { isLoading, data, refetch, error } = useQuery({
+  const { isLoading, isFetching, data, refetch, error } = useQuery({
     queryKey: ["questionData"],
-    queryFn: () => fetch(`${ApiBase}/questions`).then((res) => res.json()),
+    queryFn: () => fetch(ApiBase).then((res) => res.json()),
     onSuccess: (response: QuizQuestion[]) => {
       if (!response?.length) return [];
       return response.map((x) => new QuizQuestion(x));
@@ -34,9 +35,10 @@ export const QuestionBase: FC = () => {
 
   const updateFinalScore = async () => {
     try {
-      const response = await fetch(`${ApiBase}/questions/update-score`, {
+      const id = sessionStorage.getItem("quiz-user-id");
+      const response = await fetch(`${ApiBase}/update-score`, {
         method: "PUT",
-        body: JSON.stringify({ currentScore: currentScore.current }),
+        body: JSON.stringify({ currentScore: currentScore.current, id }),
         headers: {
           "Content-Type": "application/json",
         },
@@ -61,45 +63,26 @@ export const QuestionBase: FC = () => {
       }, 1500);
   }, [isLoading, data]);
 
-  if (isLoading && !data) {
-    return (
-      <Stack
-        width={"100vw"}
-        height={"100vh"}
-        justifyContent={"center"}
-        alignItems={"center"}
-        gap={2}
-      >
-        <CircularProgress color="inherit" />
-        <Typography>We're getting things ready...</Typography>
-      </Stack>
-    );
+  if ((isFetching || isLoading) && !data) {
+    return <LoadingBase text="We're getting things ready for you..." />;
   }
 
-  if (isUpdating) {
-    return (
-      <Stack
-        width={"100vw"}
-        height={"100vh"}
-        justifyContent={"center"}
-        alignItems={"center"}
-        gap={2}
-      >
-        <CircularProgress color="inherit" />
-        <Typography>Congratulations on finishing the Quiz!</Typography>
-      </Stack>
-    );
-  }
+  const questionData = (data || []).find(
+    (x) => x.order === currentQuestionRef.current
+  );
 
-  const questionData = (data || []).find((x) => x.order === currentQuestion);
-
-  const handleSubmit = async (selectionOption: QuizOption) => {
+  const handleSubmit = (selectionOption: QuizOption) => {
+    setIsSubmitting(true);
     if (selectionOption?.isCorrect) {
       currentScore.current += 100;
     } else {
       currentScore.current -= 100;
     }
+    setTimeout(() => setOpenExplainer(true), 1500);
+  };
 
+  const handleExplainerConfirm = async () => {
+    currentQuestionRef.current++;
     if (questionData?.order === data?.length) {
       const response = await updateResultAsync();
       if (!!response && response.userId !== -1) {
@@ -108,35 +91,21 @@ export const QuestionBase: FC = () => {
       router.push("/quiz-result");
       return;
     }
-    setIsSubmitting(true);
-    setTimeout(() => setOpenExplainer(true), 1500);
-  };
-
-  const handleExplainerConfirm = () => {
     setSelectedIndex(-1);
     setIsSubmitting(false);
     setOpenExplainer(false);
-    setCurrentQuestion((v) => (v = v + 1));
   };
 
-  if (!questionData || !!error) {
+  if (!!error) {
+    return <ErrorBase />;
+  }
+
+  if (
+    isUpdating ||
+    (!questionData && currentQuestionRef.current >= data!.length)
+  ) {
     return (
-      <Stack
-        width={"100vw"}
-        height={"100vh"}
-        justifyContent={"center"}
-        alignItems={"center"}
-        gap={2}
-      >
-        <Typography textAlign={"center"}>
-          Something went wrong...
-          <br />
-          Refresh the page or try again later.
-        </Typography>
-        <Button variant="contained" onClick={() => window.location.reload()}>
-          Refresh
-        </Button>
-      </Stack>
+      <LoadingBase text="Congratulations on finishing the quiz! We're processing your result." />
     );
   }
 
@@ -156,11 +125,11 @@ export const QuestionBase: FC = () => {
         }}
         elevation={6}
       >
-        <Stack spacing={2} px={4} mt={3}>
+        <Stack spacing={2} px={4} mt={3} pb={2}>
           <Stack flexDirection={"row"} gap={2} justifyContent={"space-between"}>
             <QuestionTimeline
               steps={data!.map((_, x) => x)}
-              activeStep={currentQuestion}
+              activeStep={currentQuestionRef.current}
             />
             <CurrentScore currentScore={currentScore.current} />
           </Stack>
@@ -171,10 +140,10 @@ export const QuestionBase: FC = () => {
             color={"black"}
             pt={2}
           >
-            {questionData.order}.{questionData.text}
+            {questionData!.order}.{questionData!.text}
           </Typography>
           <Stack spacing={2} pb={4}>
-            {questionData.options?.map((x, i) => (
+            {questionData!.options?.map((x, i) => (
               <QuestionOption
                 optionText={x.text}
                 index={i + 1}
@@ -194,9 +163,9 @@ export const QuestionBase: FC = () => {
           <QuestionFooter
             nextText="Submit Answer"
             onNext={() =>
-              handleSubmit(questionData.options?.[selectedIndex - 1])
+              handleSubmit(questionData!.options?.[selectedIndex - 1])
             }
-            disabled={selectedIndex < 1}
+            disabled={selectedIndex < 1 || isSubmitting}
           />
           <QuestionExplainer
             open={openExplainer}

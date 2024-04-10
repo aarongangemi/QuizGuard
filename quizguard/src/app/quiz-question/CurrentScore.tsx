@@ -7,7 +7,7 @@ interface Props {
 
 export const CurrentScore: FC<Props> = ({ currentScore }) => {
   return (
-    <Stack textAlign={"center"}>
+    <Stack textAlign={"center"} ml={1}>
       <Typography variant="subtitle2" whiteSpace={"nowrap"}>
         Current score:
       </Typography>

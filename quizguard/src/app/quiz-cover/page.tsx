@@ -53,11 +53,7 @@ export default function QuizCover() {
               cybersecurity!
             </Typography>
             <Stack flexDirection={"row"} alignItems={"center"}>
-              <Checkbox
-                onChange={(_, v) => setChecked(v)}
-                checked={checked}
-                color="success"
-              />
+              <Checkbox onChange={(_, v) => setChecked(v)} checked={checked} />
               <Typography
                 variant={"subtitle1"}
                 fontWeight={"bold"}
@@ -72,7 +68,6 @@ export default function QuizCover() {
         </Alert>
         <Button
           disabled={!checked}
-          color="success"
           variant={"contained"}
           style={{ marginTop: 16, width: 250 }}
           onClick={() => router.push("/quiz-question")}

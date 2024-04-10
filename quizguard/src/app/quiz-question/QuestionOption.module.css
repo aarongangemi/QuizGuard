@@ -10,7 +10,7 @@
   }
   100% {
     transform: scale(1.05);
-    background-color: rgba(0, 255, 0, 1);
+    background-color: rgb(126, 255, 126);
   }
 }
 
@@ -20,7 +20,7 @@
   }
   100% {
     transform: scale(1.05);
-    background-color: rgb(244, 35, 31);
+    background-color: rgb(255, 119, 117);
   }
 }
 

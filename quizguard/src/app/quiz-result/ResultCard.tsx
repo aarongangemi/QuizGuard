@@ -1,11 +1,13 @@
 import { Stack, Typography } from "@mui/material";
 import { FC } from "react";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
+import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 
 interface Props {
   label: string;
   score: number;
   ranking: number;
+  showTrophy?: boolean;
 }
 
 const getRankingLabel = (ranking: number) => {
@@ -21,7 +23,12 @@ const getRankingLabel = (ranking: number) => {
   }
 };
 
-export const ResultCard: FC<Props> = ({ label, score, ranking }) => {
+export const ResultCard: FC<Props> = ({
+  label,
+  score,
+  ranking,
+  showTrophy = false,
+}) => {
   return (
     <Stack
       width={300}
@@ -32,8 +39,11 @@ export const ResultCard: FC<Props> = ({ label, score, ranking }) => {
       alignItems={"center"}
       spacing={4}
     >
-      <Typography variant="h4">{label}</Typography>
-      <Stack flexDirection={"row"} gap={2} alignItems={"center"}>
+      <Stack flexDirection={"row"} gap={1.5} alignItems={"center"}>
+        {showTrophy && <EmojiEventsIcon sx={{ color: "#fcc201" }} />}
+        <Typography variant="h4">{label}</Typography>
+      </Stack>
+      <Stack flexDirection={"row"} gap={1.5} alignItems={"center"}>
         <Typography variant="h6" fontWeight={"bold"}>
           {score.toLocaleString()}pts
         </Typography>

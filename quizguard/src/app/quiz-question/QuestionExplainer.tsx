@@ -1,4 +1,4 @@
-import { Button, Drawer, Paper, Stack, Typography } from "@mui/material";
+import { Button, Modal, Stack, Typography } from "@mui/material";
 import { FC } from "react";
 
 interface Props {
@@ -7,30 +7,38 @@ interface Props {
   onExplainerConfirm: () => void;
 }
 
+const style = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  p: 4,
+  borderRadius: 4,
+};
+
 export const QuestionExplainer: FC<Props> = ({
   open,
   explainerText,
   onExplainerConfirm,
 }) => {
   return (
-    <Drawer open={open} anchor={"top"}>
-      <Paper sx={{ minHeight: 300, background: "#ADD8E6" }}>
-        <Typography textAlign={"left"} p={3}>
+    <Modal open={open}>
+      <Stack sx={style}>
+        <Typography variant="h5">Explanation</Typography>
+        <Typography textAlign={"left"} py={3}>
           {explainerText}
         </Typography>
         <Button
           variant="contained"
           color="primary"
           onClick={onExplainerConfirm}
-          sx={{
-            position: "absolute",
-            bottom: 16,
-            right: 16,
-          }}
         >
           Next Question
         </Button>
-      </Paper>
-    </Drawer>
+      </Stack>
+    </Modal>
   );
 };
