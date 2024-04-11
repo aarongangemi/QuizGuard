@@ -23,9 +23,8 @@ import { FC, useState } from "react";
 import useSidebar from "../hooks/useSidebar";
 import { useRouter } from "next/navigation";
 import LockIcon from "@mui/icons-material/Lock";
-import { FlexCenter } from "./FlexCenter";
 import { Tabs } from "./Tabs";
-import { Snackbar } from "@mui/material";
+import { Snackbar, Stack } from "@mui/material";
 import { isQuizUnlocked } from "./QuizFunctions";
 
 const drawerWidth = 240;
@@ -85,7 +84,13 @@ export const SidebarAndHeaderBar: FC = () => {
           >
             <MenuIcon />
           </IconButton>
-          <FlexCenter>
+          <Stack
+            flexDirection={"row"}
+            justifyContent={"center"}
+            alignItems={"center"}
+            width={"100%"}
+            height={"100%"}
+          >
             <Image
               src={NameLogo}
               alt="login"
@@ -94,7 +99,7 @@ export const SidebarAndHeaderBar: FC = () => {
               onClick={() => router.push("/")}
               style={{ cursor: "pointer" }}
             />
-          </FlexCenter>
+          </Stack>
         </Toolbar>
       </AppBar>
       <Drawer
