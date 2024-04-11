@@ -23,7 +23,6 @@ import { FC, useState } from "react";
 import useSidebar from "../hooks/useSidebar";
 import { useRouter } from "next/navigation";
 import LockIcon from "@mui/icons-material/Lock";
-import { ModuleKeys } from "./ModuleData";
 import { FlexCenter } from "./FlexCenter";
 import { Tabs } from "./Tabs";
 import { Snackbar } from "@mui/material";
@@ -87,14 +86,14 @@ export const SidebarAndHeaderBar: FC = () => {
             <MenuIcon />
           </IconButton>
           <FlexCenter>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-              edge="start"
-            >
-              <Image src={NameLogo} alt="login" width={200} height={40} />
-            </IconButton>
+            <Image
+              src={NameLogo}
+              alt="login"
+              width={200}
+              height={40}
+              onClick={() => router.push("/")}
+              style={{ cursor: "pointer" }}
+            />
           </FlexCenter>
         </Toolbar>
       </AppBar>

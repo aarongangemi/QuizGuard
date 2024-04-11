@@ -1,4 +1,4 @@
-import { Paper, Stack, Tooltip } from "@mui/material";
+import { Paper, Stack, Tooltip, Typography } from "@mui/material";
 import { FC } from "react";
 import { ModuleContent } from "../page";
 import Image from "next/image";
@@ -110,11 +110,15 @@ export const ModuleItemContainer: FC<Props> = ({ module }) => {
             }}
             onClick={() => (!isDisabled ? router.push(module.link) : null)}
           >
-            <Stack direction={"row"} spacing={2}>
+            <Stack direction={"row"} spacing={2} borderRadius={4}>
               <Image
                 src={module.image}
                 alt={module.title}
-                style={{ width: 180, height: 180 }}
+                style={{
+                  width: 180,
+                  height: 180,
+                  borderRadius: "4px 0 0px 4px",
+                }}
               />
               <Stack
                 direction={"column"}
@@ -122,7 +126,7 @@ export const ModuleItemContainer: FC<Props> = ({ module }) => {
                 spacing={0.25}
               >
                 <h3>{module.title}</h3>
-                <p>{module.description}</p>
+                <Typography>{module.description}</Typography>
               </Stack>
             </Stack>
           </Paper>

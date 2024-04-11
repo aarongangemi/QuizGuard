@@ -29,7 +29,6 @@ export const ModuleButtonsFooter: FC<Props> = ({
     <Stack direction={"row"} justifyContent={"space-between"} width={"100%"}>
       <Button
         variant="outlined"
-        style={{ color: "#f55a07", borderColor: "#f55a07" }}
         onClick={(e) => {
           e.preventDefault();
           router.push(previousLink);
@@ -40,7 +39,6 @@ export const ModuleButtonsFooter: FC<Props> = ({
       </Button>
       <Button
         variant="outlined"
-        style={{ color: "#54da39", borderColor: "#54da39" }}
         onClick={(e) => {
           e.preventDefault();
           handleModuleCompletion();
