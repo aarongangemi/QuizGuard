@@ -23,7 +23,6 @@ export interface ModuleContent {
 
 export default function Modules() {
   const { open } = useSidebar();
-  console.log(decodeURIComponent(document.cookie));
   return (
     <Box sx={{ display: "flex" }}>
       <SidebarAndHeaderBar />

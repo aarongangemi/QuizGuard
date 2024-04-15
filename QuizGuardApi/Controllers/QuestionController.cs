@@ -72,8 +72,9 @@ namespace QuizGuardApi.Controllers
             {
                 Score = model.CurrentScore
             });
-            var userId = liveContext.QuizResults.Max(x => x.Id);
             await liveContext.SaveChangesAsync();
+
+            var userId = liveContext.QuizResults.Max(x => x.Id);
             var json = JsonConvert.SerializeObject(new QuizUserData { UserId = userId });
             return Content(json, "application/json");
         }
