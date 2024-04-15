@@ -61,7 +61,8 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 export const SidebarAndHeaderBar: FC = () => {
   const theme = useTheme();
-  const { open, handleDrawerOpen, handleDrawerClose } = useSidebar();
+  const { open, handleDrawerOpen, handleDrawerClose, currentTab } =
+    useSidebar();
   const router = useRouter();
   const [showToast, setShowToast] = useState(false);
 
@@ -147,8 +148,7 @@ export const SidebarAndHeaderBar: FC = () => {
             >
               <ListItemButton
                 style={{
-                  color:
-                    window.location.pathname === text ? "#0080ffd8" : "gray",
+                  color: currentTab === text ? "#1976d2" : "gray",
                   fontWeight: "bold",
                   cursor:
                     !isQuizUnlocked() && text === Tabs.TakeQuiz
@@ -158,9 +158,17 @@ export const SidebarAndHeaderBar: FC = () => {
               >
                 <ListItemIcon>
                   {index % 2 === 0 ? (
-                    <SchoolIcon />
+                    <SchoolIcon
+                      sx={{
+                        color: currentTab === text ? "#1976d2" : "gray",
+                      }}
+                    />
                   ) : isQuizUnlocked() ? (
-                    <QuizIcon />
+                    <QuizIcon
+                      sx={{
+                        color: currentTab === text ? "#1976d2" : "gray",
+                      }}
+                    />
                   ) : (
                     <LockIcon />
                   )}
