@@ -10,7 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<LiveContext>(options => options.UseSqlServer("Server=localhost;Database=QuizGuardDb;Trusted_Connection=False;TrustServerCertificate=True;User=sa;Password=Gangemi1;"));
+builder.Services.AddDbContext<LiveContext>(options => options.UseSqlServer("Server=JOEGANGEMISPC1\\MYOBACCT;Database=QuizGuardDb;Trusted_Connection=True;TrustServerCertificate=True;"));
 
 builder.Services.AddCors(options =>
 {
